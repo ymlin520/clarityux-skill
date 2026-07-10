@@ -1,6 +1,6 @@
 ---
-name: clarity-ux-insights-dashboard
-description: "Use when turning Microsoft Clarity behavior analytics into a reusable UX dashboard for plain HTML sites, WordPress admin pages, or embedded front-end reports."
+name: clarityux-skill
+description: "Use when turning Microsoft Clarity recordings and behavior analytics into a reusable, RWD, visually polished UX dashboard skill for plain HTML sites, WordPress admin pages, or embedded reports."
 version: 1.0.0
 author: Hermes Agent
 license: MIT
@@ -10,11 +10,11 @@ metadata:
     related_skills: [hermes-agent-skill-authoring]
 ---
 
-# Microsoft Clarity UX Insights Dashboard
+# ClarityUX Skill
 
 ## Overview
 
-This skill turns a Microsoft Clarity-style UX analysis page into a reusable architecture that works beyond one WordPress admin screen.
+This skill turns a Microsoft Clarity-style UX analysis page into a reusable **RWD, visually polished** architecture that works beyond one WordPress admin screen.
 
 Use it when the user wants a dashboard that can:
 
@@ -22,6 +22,7 @@ Use it when the user wants a dashboard that can:
 - fetch behavioral analytics from **Microsoft Clarity** or a backend proxy that talks to Clarity
 - display **recordings / behavior signals / UX issue summaries / top pages / recommendations**
 - render in **plain HTML**, **WordPress admin**, **WordPress front-end**, or **custom apps**
+- prioritize **RWD layout quality**, mobile readability, and premium analytics presentation
 
 The front-end must be portable. Sensitive credentials must stay server-side.
 

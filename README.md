@@ -1,219 +1,148 @@
-# Microsoft Clarity UX Insights Dashboard Skill
+# ClarityUX Skill
 
-A reusable Hermes skill and front-end demo for building a **Microsoft Clarity UX analytics dashboard** that can run in:
+一個可重用的 **Microsoft Clarity UX 建議分析 Skill**，重點是：
 
-- plain HTML websites
-- WordPress admin pages
-- WordPress front-end embeds
-- custom PHP / Node / Python dashboards
+- **RWD 響應式介面**
+- **好看、可商用的分析數據畫面**
+- **可放到任何 HTML / WordPress / 後台頁**
+- **Clarity token / project 留在後端，不暴露在前端**
+- **可每日早上 8 點自動更新數據**
 
-## Goal
+## 這個 skill 的用途
 
-Turn a Clarity-style admin page such as:
+把像這種 WordPress 後台頁：
 
-- `hostwp-clarity-recordings`
+- `https://hostswp.com/wp-admin/admin.php?page=hostwp-clarity-recordings`
 
-into a **portable UX analysis dashboard** that can be reused across sites by changing only the project settings / key / token / backend data source.
+整理成一套可重用的 UX 分析中心，之後你只要換：
 
-## Important architecture note
+- project id
+- token / backend bridge
+- API endpoint
+- site label
 
-This project is designed so that:
+就可以在其他網站直接重用同一個漂亮分析介面。
 
-- the **front-end HTML is reusable**
-- the **Clarity secret/token stays server-side**
-- the UI only consumes a normalized JSON payload
+---
 
-That means you can use the same visual dashboard on a general HTML page, not only in WordPress.
+## 特色
 
-## What this repo includes
+### 1. RWD 響應式介面
+支援：
+- 手機
+- 平板
+- 桌機
 
-- `SKILL.md` — reusable Hermes skill
-- `demo/index.html` — premium HTML dashboard mockup
-- `examples/payload.example.json` — canonical payload schema
-- `api.php` — JSON endpoint that serves the latest cached payload
-- `refresh-dashboard.php` — refresh job that rebuilds `data/dashboard-cache.json`
-- `config.example.php` — config template for mock/file/remote JSON modes
-- `.github/workflows/daily-refresh.yml` — GitHub Actions scheduler at 08:00 Asia/Taipei daily
-- `references/source-mapping.md` — notes on the target page and portability assumptions
+介面會自動調整：
+- KPI 卡片排列
+- 問題頁卡片欄數
+- 趨勢圖與建議面板堆疊方式
+- 文字間距與按鈕尺寸
 
-## Example use cases
-
-### 1. General HTML page
-
-- create `/api/clarity-ux-insights`
-- return normalized JSON
-- reuse `demo/index.html` as the front-end shell
-
-### 2. WordPress admin page
-
-- store project settings and token in WordPress options
-- fetch Clarity data server-side
-- print payload into an admin page
-- reuse the same renderer
-
-### 3. Front-end client reporting page
-
-- show summary cards, issue trends, problem pages, recordings, and UX suggestions
-- protect the endpoint if the report is private
-
-## Recommended data blocks
-
-- sessions / recordings summary
-- rage clicks / dead clicks / quick backs / excessive scroll
+### 2. 好看的 UX 分析數據介面
+包含：
+- Hero 狀態區
+- KPI summary cards
+- UX issue cards
 - trend chart
-- top problematic pages
-- sample recordings
-- device/source/landing page segments
-- UX recommendations
+- top problem pages
+- recording spotlight
+- device / source breakdown
+- UX recommendation cards
 
-## How to preview locally
+### 3. 可放到任何 HTML
+你可以用在：
+- 一般 HTML 網站
+- WordPress admin page
+- WordPress 前台頁面
+- PHP dashboard
+- 自訂分析後台
 
+### 4. 每日早上 8 點自動更新
+repo 已內建：
+- `refresh-dashboard.php`
+- `api.php`
+- `.github/workflows/daily-refresh.yml`
+
+GitHub Actions 會在：
+- **Asia/Taipei 每天早上 8:00**
+
+自動刷新 cache。
+
+---
+
+## Repo 內容
+
+| 檔案 | 用途 |
+|---|---|
+| `SKILL.md` | Hermes skill 定義 |
+| `demo/index.html` | RWD 分析介面 demo |
+| `templates/standalone-clarity-dashboard.html` | 可重用 HTML 模板 |
+| `api.php` | 後端 JSON endpoint |
+| `refresh-dashboard.php` | 每日更新資料並寫入 cache |
+| `build-dashboard.php` | 產出正式 HTML |
+| `dist/dashboard.html` | build 後成品 |
+| `config.example.php` | 設定檔範本 |
+| `templates/api-response.schema.json` | payload schema |
+| `examples/payload.example.json` | 範例資料 |
+| `.github/workflows/daily-refresh.yml` | 每日 8 點自動更新 |
+
+---
+
+## 快速使用
+
+### A. 本機預覽 demo
 ```bash
-cd clarity-ux-insights-skill
+cd clarityux-skill
 python3 -m http.server 8788
 ```
 
-Then open:
-
+打開：
 - `http://localhost:8788/demo/`
 
-## Why this is not hard-locked to WordPress
-
-The current environment could confirm the target admin URL exists behind WordPress login, but could not inspect a matching local plugin source file in this filesystem. So this repo intentionally captures the **portable product pattern** rather than a one-site-only implementation.
-
-## 直接拿來做成漂亮 HTML 的方式
-
-這個 skill 已經附上可重用 HTML 範本：
-
-- `templates/standalone-clarity-dashboard.html`
-
-使用方式：
-
-1. 準備一個後端 API，例如：`/api/clarity-ux-insights`
-2. 後端用你的 Clarity key / token / project 設定去抓資料
-3. 後端回傳符合 `templates/api-response.schema.json` 的 JSON
-4. 把 HTML 範本中的：
-   - `{{DASHBOARD_TITLE}}`
-   - `{{API_ENDPOINT}}`
-   - `{{SITE_LABEL}}`
-   換成你的實際值
-5. 上線後，這頁就是可直接顯示 UX 分析建議的漂亮 HTML
-
-## PHP 通用版已內建
-
-我已經補上：
-
-- `api.php`
-- `config.example.php`
-- `build-dashboard.php`
-- `dist/dashboard.html`（可建置輸出）
-
-### 你要的 1 + 2 + 3 現在怎麼實現
-
-1. **直接可上線的漂亮 HTML**  
-   用 `build-dashboard.php` 自動產生 `dist/dashboard.html`
-
-2. **只要填 token / project / endpoint 就能接資料**  
-   在 `config.php` 填：
-   - `project_id`
-   - `remote_json_url`
-   - `remote_bearer_token` 或 `remote_headers`
-   - `public_api_endpoint`
-
-3. **可直接打包 zip / push GitHub**  
-   這個 repo 已整理成完整 skill 專案結構
-
-### 支援模式
-
-| mode | 用途 |
-|---|---|
-| `mock` | 直接讀 `examples/payload.example.json`，最快預覽 |
-| `file` | 讀你自己整理好的本機 JSON |
-| `remote_json` | 打你自己的 bridge API / 後端整理 API |
-
-### 最快開始方式
-
-1. 複製設定檔：
-   ```bash
-   cp config.example.php config.php
-   ```
-2. 在 `config.php` 先確認這幾個欄位：
-   ```php
-   'mode' => 'remote_json',
-   'project_id' => '你的-project-id',
-   'remote_json_url' => 'https://你的網站/api/clarity-bridge',
-   'remote_bearer_token' => '你的token',
-   'public_api_endpoint' => '/api.php',
-   'public_site_label' => 'https://你的網站/'
-   ```
-3. 若你還沒 bridge，也可以先用 `mock` 模式確認畫面
-4. 產生正式 HTML：
-   ```bash
-   php build-dashboard.php
-   ```
-5. 會輸出：
-   - `dist/dashboard.html`
-6. 前端 HTML 可直接用：
-   - `dist/dashboard.html`（正式部署版）
-   - `demo/index.html`（示範版）
-   - `templates/standalone-clarity-dashboard.html`（模板版）
-
-### 在一般主機上使用
-
-若你要做成一般 HTML + PHP：
-
-- `api.php` 當 JSON endpoint
-- `standalone-clarity-dashboard.html` 當漂亮前端
-- 把 `{{API_ENDPOINT}}` 改成 `/api.php`
-
-這樣就能做到：
-
-> 給 project / key / token（留在後端）→ 顯示漂亮的 UX HTML dashboard
-
-## Suggested next step
-
-如果你之後拿到可用的 Clarity bridge / export endpoint，下一步只要：
-
-1. 在 `config.php` 設定 `remote_json_url`
-2. 若需要認證，填 `remote_bearer_token` 或 `remote_headers`
-3. 讓前端 HTML 指向 `api.php`
-
-Then wire the front-end to real Clarity-derived JSON.
-
-## 每日早上 8 點自動更新
-
-這個 repo 現在已內建：
-
-- `refresh-dashboard.php`
-- `data/dashboard-cache.json`
-- `.github/workflows/daily-refresh.yml`
-
-### GitHub Actions 排程
-
-排程時間：
-
-- `0 0 * * *`（UTC）
-- 等於 **Asia/Taipei 每天早上 8:00**
-
-每天會自動執行：
-
+### B. 產出正式 HTML
 ```bash
-php refresh-dashboard.php
+php build-dashboard.php
 ```
 
-並更新：
+產出：
+- `dist/dashboard.html`
 
-- `data/dashboard-cache.json`
+### C. 接真實資料
+在 `config.php` 填入：
+- `project_id`
+- `remote_json_url`
+- `remote_bearer_token`
+- 或 `remote_headers`
 
-### 一般 PHP 主機 cron
+然後由 `api.php` 提供前端資料。
 
-若你部署在一般主機，也可以直接設：
+---
 
-```bash
-0 8 * * * /usr/bin/php /path/to/clarity-ux-insights-skill/refresh-dashboard.php
-```
+## 架構原則
 
-### 前端讀取位置
+### 安全做法
+1. 前端 HTML 呼叫自己的 `api.php`
+2. 後端保存 Clarity token / project 設定
+3. 後端抓取 Clarity 資料並正規化
+4. 前端只負責渲染漂亮畫面
 
-- `demo/index.html` → `../data/dashboard-cache.json`
-- `api.php` → 回傳最新 cache JSON
+### 不安全做法
+- 把 Clarity token 寫進前端 JS
+- 在公開 HTML 中直接暴露私密 key
+
+---
+
+## 適合的場景
+
+- 想把 Clarity recordings 分析做成通用 skill
+- 想把 UX 建議分析頁放到任何 HTML
+- 想做類似 SaaS / 顧問風格的高質感儀表板
+- 想保留 RWD 與每日自動更新機制
+
+---
+
+## GitHub
+
+目標 repo：
+- `https://github.com/ymlin520/clarityux-skill`
