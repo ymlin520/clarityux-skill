@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Clarity UX Insights Dashboard Payload",
+  "type": "object",
+  "required": ["status", "statusLabel", "statusMessage", "site", "projectId", "rangeLabel", "summaryCards", "issueCards", "charts", "problemPages", "recordings", "segments", "recommendations", "alerts"],
+  "properties": {
+    "dashboardTitle": {"type": "string"},
+    "status": {"type": "string"},
+    "statusLabel": {"type": "string"},
+    "statusMessage": {"type": "string"},
+    "site": {"type": "string"},
+    "projectId": {"type": "string"},
+    "rangeLabel": {"type": "string"},
+    "summaryCards": {"type": "array"},
+    "issueCards": {"type": "array"},
+    "charts": {"type": "object"},
+    "problemPages": {"type": "array"},
+    "recordings": {"type": "array"},
+    "segments": {"type": "object"},
+    "recommendations": {"type": "array"},
+    "alerts": {"type": "array"}
+  }
+}

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{DASHBOARD_TITLE}}</title>
+  <style>
+    :root{
+      --bg:#071120;--card:#101c35;--card2:#122344;--line:#23385f;--text:#e9f2ff;--muted:#9cb1d1;
+      --cyan:#63b9d1;--violet:#7c5cff;--pink:#ff6b9d;--amber:#f5b84d;--green:#30d08d;--red:#ff6b6b;
+      --shadow:0 18px 40px rgba(0,0,0,.28)
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:radial-gradient(circle at top,#12264e 0%,#071120 55%);color:var(--text)}
+    .wrap{max-width:1480px;margin:0 auto;padding:24px}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:18px}.card{background:linear-gradient(180deg,rgba(18,35,68,.96),rgba(12,24,46,.96));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .hero-main{padding:28px;position:relative;overflow:hidden}.hero-main:after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:radial-gradient(circle,var(--violet),transparent 68%);opacity:.22}
+    .hero-main h1{margin:10px 0 0;font-size:40px;line-height:1.08;font-weight:900;background:linear-gradient(90deg,#fff,var(--cyan),#b4c8ff);-webkit-background-clip:text;color:transparent}.hero-main p{margin:16px 0 0;color:#c4d4ef;line-height:1.75;max-width:780px}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px}.pill{padding:8px 12px;border-radius:999px;background:rgba(124,92,255,.16);border:1px solid rgba(124,92,255,.45);font-size:12px;font-weight:800;color:#d9d0ff}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.meta span{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:12px;color:#bfd1ee}
+    .hero-side{padding:24px;display:flex;flex-direction:column;justify-content:space-between}.live{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(48,208,141,.12);border:1px solid rgba(48,208,141,.35);color:#bbf0d7;font-size:12px;font-weight:900}.live i{width:10px;height:10px;border-radius:50%;background:var(--green);display:block;box-shadow:0 0 0 6px rgba(48,208,141,.13)}
+    .big{font-size:42px;font-weight:900;margin:14px 0 6px}.sub{color:var(--muted);font-size:13px;line-height:1.6}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.metric{padding:18px}.metric .label{font-size:13px;color:#bfd1ee;font-weight:800}.metric .value{margin-top:10px;font-size:30px;font-weight:900}.metric .hint{margin-top:8px;font-size:13px;color:var(--muted);line-height:1.55}
+    .warn{box-shadow:inset 0 0 0 1px rgba(245,184,77,.26)} .bad{box-shadow:inset 0 0 0 1px rgba(255,107,107,.25)}.section{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-bottom:18px}.panel{padding:22px}.panel h2,.list-card h2{margin:0 0 14px;font-size:17px}
+    .chart{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:end;height:260px;margin-top:16px}.barcol{display:flex;flex-direction:column;align-items:center;gap:8px}.bars{display:flex;align-items:end;gap:4px;height:190px}.bar{width:12px;border-radius:8px 8px 2px 2px;background:var(--cyan)}.bar.b2{background:var(--pink)}.bar.b3{background:var(--amber)}.xlabel{font-size:11px;color:var(--muted);font-weight:700}
+    .legend{display:grid;gap:12px}.legend-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}.legend-row:first-child{border-top:0}.left{display:flex;align-items:center;gap:10px;font-weight:800}.dot{width:12px;height:12px;border-radius:50%}
+    .list-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}.list-card{padding:22px}.table{display:grid;gap:10px}.row{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,max-content);gap:12px;align-items:start;padding:12px 0;border-top:1px solid rgba(255,255,255,.06)}.row:first-child{border-top:0}.row .title{font-weight:800;color:#edf4ff}.row .note{grid-column:1/-1;font-size:12px;color:var(--muted);line-height:1.6}.num{font-weight:800;color:#bfd1ee}
+    .recording{display:grid;gap:12px}.rec{padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}.rec h3{margin:0 0 6px;font-size:15px}.rec .meta2{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.tag{padding:6px 10px;border-radius:999px;background:rgba(99,185,209,.12);border:1px solid rgba(99,185,209,.28);font-size:12px;color:#c8edf7}.rec a{color:#b8c8ff;text-decoration:none;font-weight:800}
+    .recs{display:grid;gap:12px}.recbox{padding:16px;border-radius:18px;background:rgba(124,92,255,.08);border:1px solid rgba(124,92,255,.24)}.pri{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;margin-bottom:8px}.pri.high{background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.34);color:#ffc3c3}.pri.medium{background:rgba(245,184,77,.14);border:1px solid rgba(245,184,77,.34);color:#ffe0a7}
+    .alert{margin-top:16px;padding:14px 16px;border-radius:16px;background:rgba(245,184,77,.1);border:1px solid rgba(245,184,77,.24);color:#ffe4b5;font-size:13px;line-height:1.65}
+    @media (max-width: 980px){.hero,.grid4,.section,.list-grid{grid-template-columns:1fr}.chart{gap:6px}.bar{width:9px}}
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app">載入中...</div>
+  <script>
+    const DASHBOARD_CONFIG = {
+      endpoint: '{{API_ENDPOINT}}',
+      siteLabel: '{{SITE_LABEL}}'
+    };
+    const esc = s => String(s ?? '');
+    async function loadPayload(){ const res = await fetch(DASHBOARD_CONFIG.endpoint); if(!res.ok) throw new Error('API 載入失敗: '+res.status); return await res.json(); }
+    function cards(rows, kind){ return rows.map(r => `<div class="card metric ${kind==='issue' ? esc(r.tone||'') : ''}"><div class="label">${esc(r.label)}</div><div class="value">${esc(r.value)}</div><div class="hint">${esc(r.hint || r.sub || '')}</div></div>`).join(''); }
+    function trend(labels, s1, s2, s3){ const max=Math.max(...s1,...s2,...s3,1); return labels.map((label,i)=>{ const a=Math.max(8,Math.round(s1[i]/max*170)); const b=Math.max(8,Math.round(s2[i]/max*170)); const c=Math.max(8,Math.round(s3[i]/max*170)); return `<div class="barcol"><div class="bars"><div class="bar" style="height:${a}px"></div><div class="bar b2" style="height:${b}px"></div><div class="bar b3" style="height:${c}px"></div></div><div class="xlabel">${esc(label)}</div></div>`}).join(''); }
+    function problemRows(rows){ return rows.map(r => `<div class="row"><div class="title">${esc(r.path)}</div><div class="num">${esc(r.rageClicks)}</div><div class="num">${esc(r.deadClicks)}</div><div class="num">${esc(r.quickBacks)}</div><div class="note">${esc(r.note)}</div></div>`).join(''); }
+    function segmentRows(rows, key='label'){ return rows.map(r => `<div class="legend-row"><div class="left">${r.color?`<span class="dot" style="background:${r.color}"></span>`:''}${esc(r[key])}</div><div class="num">${esc(r.value)}${Number.isInteger(r.value)&&r.value<=100?'%':''}</div></div>`).join(''); }
+    function recordingRows(rows){ return rows.map(r => `<div class="rec"><h3>${esc(r.title)}</h3><div class="meta2"><span class="tag">${esc(r.device)}</span><span class="tag">${esc(r.country)}</span><span class="tag">${esc(r.duration)}</span><span class="tag">${esc(r.signal)}</span></div><a href="${esc(r.url)}" target="_blank" rel="noopener">開啟錄影 ↗</a></div>`).join(''); }
+    function recommendationRows(rows){ return rows.map(r => `<div class="recbox"><span class="pri ${esc(r.priority)}">${esc(r.priority).toUpperCase()}</span><h3>${esc(r.title)}</h3><div class="sub">${esc(r.detail)}</div></div>`).join(''); }
+    function render(data){
+      document.getElementById('app').innerHTML = `
+        <section class="hero">
+          <div class="card hero-main">
+            <div class="pill-row"><span class="pill">Microsoft Clarity</span><span class="pill">UX Insights</span><span class="pill">Reusable HTML Dashboard</span></div>
+            <h1>${esc(data.dashboardTitle || '{{DASHBOARD_TITLE}}')}</h1>
+            <p>這份頁面是由 Clarity UX Insights skill 產出的可重用 HTML 儀表板。只要後端 API 已接上你的 key / project 設定，就能直接顯示該網站的 UX 分析建議。</p>
+            <div class="meta"><span>網站：${esc(data.site || DASHBOARD_CONFIG.siteLabel)}</span><span>Project：${esc(data.projectId)}</span><span>區間：${esc(data.rangeLabel)}</span><span>狀態：${esc(data.statusLabel)}</span></div>
+          </div>
+          <div class="card hero-side">
+            <div><span class="live"><i></i> UX ANALYSIS READY</span><div class="big">${esc(data.summaryCards?.[0]?.value || '')}</div><div class="sub">${esc(data.statusMessage)}</div></div>
+            ${(data.alerts||[]).map(a=>`<div class="alert">${esc(a.message)}</div>`).join('')}
+          </div>
+        </section>
+        <section class="grid4">${cards(data.summaryCards||[], 'summary')}</section>
+        <section class="grid4">${cards(data.issueCards||[], 'issue')}</section>
+        <section class="section">
+          <div class="card panel"><h2>行為訊號趨勢</h2><div class="chart">${trend(data.charts.labels||[], data.charts.rageClicks||[], data.charts.deadClicks||[], data.charts.quickBacks||[])}</div><div class="sub" style="margin-top:14px">藍 = rage clicks ｜ 粉 = dead clicks ｜ 黃 = quick backs</div></div>
+          <div class="card panel"><h2>裝置分布</h2><div class="legend">${segmentRows(data.segments.devices || [])}</div></div>
+        </section>
+        <section class="list-grid">
+          <div class="card list-card"><h2>問題頁面排行</h2><div class="sub">頁面 / Rage / Dead / Quick Back</div><div class="table">${problemRows(data.problemPages||[])}</div></div>
+          <div class="card list-card"><h2>錄影重點觀察</h2><div class="recording">${recordingRows(data.recordings||[])}</div></div>
+          <div class="card list-card"><h2>來源分布</h2><div class="legend">${segmentRows(data.segments.sources || [])}</div></div>
+          <div class="card list-card"><h2>Landing Pages</h2><div class="legend">${segmentRows(data.segments.landingPages || [])}</div></div>
+        </section>
+        <section class="card list-card"><h2>UX 優化建議</h2><div class="recs">${recommendationRows(data.recommendations||[])}</div></section>`;
+    }
+    loadPayload().then(render).catch(err => document.getElementById('app').innerHTML = `<section class="card hero-main"><h1>載入失敗</h1><p>${esc(err.message)}</p></section>`);
+  </script>
+</body>
+</html>

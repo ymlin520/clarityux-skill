@@ -1,0 +1,17 @@
+# Local runtime config
+config.php
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs / temp
+*.log
+.tmp/
+.cache/
+
+# Local test servers / output
+node_modules/
+vendor/
