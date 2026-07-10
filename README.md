@@ -101,6 +101,23 @@ The current environment could confirm the target admin URL exists behind WordPre
 
 - `api.php`
 - `config.example.php`
+- `build-dashboard.php`
+- `dist/dashboard.html`（可建置輸出）
+
+### 你要的 1 + 2 + 3 現在怎麼實現
+
+1. **直接可上線的漂亮 HTML**  
+   用 `build-dashboard.php` 自動產生 `dist/dashboard.html`
+
+2. **只要填 token / project / endpoint 就能接資料**  
+   在 `config.php` 填：
+   - `project_id`
+   - `remote_json_url`
+   - `remote_bearer_token` 或 `remote_headers`
+   - `public_api_endpoint`
+
+3. **可直接打包 zip / push GitHub**  
+   這個 repo 已整理成完整 skill 專案結構
 
 ### 支援模式
 
@@ -116,11 +133,26 @@ The current environment could confirm the target admin URL exists behind WordPre
    ```bash
    cp config.example.php config.php
    ```
-2. 先用 `mock` 模式確認畫面
-3. 若你已有自己的後端 bridge，改成 `remote_json`
-4. 前端 HTML 可直接用：
-   - `demo/index.html`
-   - 或 `templates/standalone-clarity-dashboard.html`
+2. 在 `config.php` 先確認這幾個欄位：
+   ```php
+   'mode' => 'remote_json',
+   'project_id' => '你的-project-id',
+   'remote_json_url' => 'https://你的網站/api/clarity-bridge',
+   'remote_bearer_token' => '你的token',
+   'public_api_endpoint' => '/api.php',
+   'public_site_label' => 'https://你的網站/'
+   ```
+3. 若你還沒 bridge，也可以先用 `mock` 模式確認畫面
+4. 產生正式 HTML：
+   ```bash
+   php build-dashboard.php
+   ```
+5. 會輸出：
+   - `dist/dashboard.html`
+6. 前端 HTML 可直接用：
+   - `dist/dashboard.html`（正式部署版）
+   - `demo/index.html`（示範版）
+   - `templates/standalone-clarity-dashboard.html`（模板版）
 
 ### 在一般主機上使用
 

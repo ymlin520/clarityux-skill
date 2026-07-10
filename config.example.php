@@ -25,6 +25,9 @@ return [
     // 若你的 bridge API 需要 Bearer Token，就填這裡
     'remote_bearer_token' => '',
 
+    // 若 bridge 不吃 Bearer，也可以直接放你要送出去的 header
+    // 例如：'Authorization: Token your-token' 或 'X-Api-Key: your-key'
+
     // 額外 Query 參數，可帶 project/site/range 等給你的 bridge
     'remote_query' => [
         // 'projectId' => 'clarity-project-demo',
@@ -37,8 +40,13 @@ return [
     ],
 
     // 基本保護：若你不想讓任何人都打這支 api.php，可填入一組 token
-    // 前端呼叫時需帶 ?access_token=這裡的值
+    // 注意：若你要產生公開 HTML 頁面，通常不要把這個 access_token 直接暴露在前端
     'access_token' => '',
+
+    // ===== 前端 HTML build 用 =====
+    // build-dashboard.php 會把這個 endpoint 直接寫進 dist/dashboard.html
+    'public_api_endpoint' => '/api.php',
+    'public_site_label' => 'https://example.com/',
 
     // 是否允許跨網域讀取
     'cors_allow_origin' => '*',
