@@ -6,71 +6,107 @@
   <title>網站 UX 行為洞察儀表板</title>
   <style>
     :root{
-      --bg:#071120;--card:#101c35;--card2:#122344;--line:#23385f;--text:#e9f2ff;--muted:#9cb1d1;
-      --cyan:#63b9d1;--violet:#7c5cff;--pink:#ff6b9d;--amber:#f5b84d;--green:#30d08d;--red:#ff6b6b;
-      --shadow:0 18px 40px rgba(0,0,0,.28)
+      --bg:#060816;
+      --bg2:#0b1022;
+      --surface:rgba(12,18,39,.78);
+      --surface-2:rgba(17,25,53,.9);
+      --surface-3:rgba(255,255,255,.04);
+      --line:rgba(255,255,255,.08);
+      --line-strong:rgba(255,255,255,.14);
+      --text:#eff4ff;
+      --muted:#9ba9c7;
+      --muted-2:#7d8cae;
+      --violet:#8b7cff;
+      --cyan:#62d0ff;
+      --pink:#ff7cb8;
+      --amber:#ffca6a;
+      --green:#43e0a1;
+      --red:#ff7b8a;
+      --shadow:0 24px 80px rgba(0,0,0,.45);
+      --radius-xl:28px;
+      --radius-lg:22px;
+      --radius-md:18px;
+      --radius-sm:14px;
+      --max:1440px;
     }
-    *{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:radial-gradient(circle at top,#12264e 0%,#071120 55%);color:var(--text)}
-    .wrap{max-width:1480px;margin:0 auto;padding:24px}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:18px}.card{background:linear-gradient(180deg,rgba(18,35,68,.96),rgba(12,24,46,.96));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
-    .hero-main{padding:28px;position:relative;overflow:hidden}.hero-main:after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:radial-gradient(circle,var(--violet),transparent 68%);opacity:.22}
-    .hero-main h1{margin:10px 0 0;font-size:40px;line-height:1.08;font-weight:900;background:linear-gradient(90deg,#fff,var(--cyan),#b4c8ff);-webkit-background-clip:text;color:transparent}.hero-main p{margin:16px 0 0;color:#c4d4ef;line-height:1.75;max-width:780px}
-    .pill-row{display:flex;flex-wrap:wrap;gap:8px}.pill{padding:8px 12px;border-radius:999px;background:rgba(124,92,255,.16);border:1px solid rgba(124,92,255,.45);font-size:12px;font-weight:800;color:#d9d0ff}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.meta span{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:12px;color:#bfd1ee}
-    .hero-side{padding:24px;display:flex;flex-direction:column;justify-content:space-between}.live{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(48,208,141,.12);border:1px solid rgba(48,208,141,.35);color:#bbf0d7;font-size:12px;font-weight:900}.live i{width:10px;height:10px;border-radius:50%;background:var(--green);display:block;box-shadow:0 0 0 6px rgba(48,208,141,.13)}
-    .big{font-size:42px;font-weight:900;margin:14px 0 6px}.sub{color:var(--muted);font-size:13px;line-height:1.6}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.metric{padding:18px}.metric .label{font-size:13px;color:#bfd1ee;font-weight:800}.metric .value{margin-top:10px;font-size:30px;font-weight:900}.metric .hint{margin-top:8px;font-size:13px;color:var(--muted);line-height:1.55}
-    .warn{box-shadow:inset 0 0 0 1px rgba(245,184,77,.26)} .bad{box-shadow:inset 0 0 0 1px rgba(255,107,107,.25)}.section{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-bottom:18px}.panel{padding:22px}.panel h2,.list-card h2{margin:0 0 14px;font-size:17px}
-    .chart{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:end;height:260px;margin-top:16px}.barcol{display:flex;flex-direction:column;align-items:center;gap:8px}.bars{display:flex;align-items:end;gap:4px;height:190px}.bar{width:12px;border-radius:8px 8px 2px 2px;background:var(--cyan)}.bar.b2{background:var(--pink)}.bar.b3{background:var(--amber)}.xlabel{font-size:11px;color:var(--muted);font-weight:700}
-    .legend{display:grid;gap:12px}.legend-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}.legend-row:first-child{border-top:0}.left{display:flex;align-items:center;gap:10px;font-weight:800}.dot{width:12px;height:12px;border-radius:50%}
-    .list-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}.list-card{padding:22px}.table{display:grid;gap:10px}.row{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,max-content);gap:12px;align-items:start;padding:12px 0;border-top:1px solid rgba(255,255,255,.06)}.row:first-child{border-top:0}.row .title{font-weight:800;color:#edf4ff}.row .note{grid-column:1/-1;font-size:12px;color:var(--muted);line-height:1.6}.num{font-weight:800;color:#bfd1ee}
-    .recording{display:grid;gap:12px}.rec{padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}.rec h3{margin:0 0 6px;font-size:15px}.rec .meta2{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.tag{padding:6px 10px;border-radius:999px;background:rgba(99,185,209,.12);border:1px solid rgba(99,185,209,.28);font-size:12px;color:#c8edf7}.rec a{color:#b8c8ff;text-decoration:none;font-weight:800}
-    .recs{display:grid;gap:12px}.recbox{padding:16px;border-radius:18px;background:rgba(124,92,255,.08);border:1px solid rgba(124,92,255,.24)}.pri{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;margin-bottom:8px}.pri.high{background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.34);color:#ffc3c3}.pri.medium{background:rgba(245,184,77,.14);border:1px solid rgba(245,184,77,.34);color:#ffe0a7}
-    .alert{margin-top:16px;padding:14px 16px;border-radius:16px;background:rgba(245,184,77,.1);border:1px solid rgba(245,184,77,.24);color:#ffe4b5;font-size:13px;line-height:1.65}
-    @media (max-width: 980px){.hero,.grid4,.section,.list-grid{grid-template-columns:1fr}.chart{gap:6px}.bar{width:9px}}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--text);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:radial-gradient(circle at 10% 10%, rgba(98,208,255,.18), transparent 26%),radial-gradient(circle at 86% 12%, rgba(139,124,255,.22), transparent 28%),radial-gradient(circle at 80% 72%, rgba(255,124,184,.10), transparent 24%),linear-gradient(180deg, #0a0d1b 0%, #060816 100%);min-height:100vh}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);background-size:32px 32px;mask-image:radial-gradient(circle at center, black 45%, transparent 100%);opacity:.45}
+    a{color:inherit}.wrap{max-width:var(--max);margin:0 auto;padding:28px 20px 56px;position:relative;z-index:1}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:14px}.brand-badge{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,var(--cyan),var(--violet) 58%,var(--pink));box-shadow:0 12px 34px rgba(124,92,255,.34)}.brand h1{margin:0;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#cfd7ec}.brand p{margin:4px 0 0;color:var(--muted);font-size:12px}.status-chip{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;background:rgba(67,224,161,.08);border:1px solid rgba(67,224,161,.22);color:#c8f6df;font-size:12px;font-weight:800;backdrop-filter:blur(16px)}.status-dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(67,224,161,.12)}
+    .glass{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+    .hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:18px;margin-bottom:18px}.hero-main,.hero-side,.panel,.list-card,.spot-card,.action-card{position:relative;overflow:hidden;border-radius:var(--radius-xl)}
+    .hero-main{padding:30px}.hero-main:before,.hero-side:before,.panel:before,.list-card:before,.spot-card:before,.action-card:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.02) 30%, rgba(98,208,255,.12), rgba(139,124,255,.10));-webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}.hero-main:after{content:"";position:absolute;right:-50px;top:-50px;width:260px;height:260px;background:radial-gradient(circle, rgba(98,208,255,.25), rgba(139,124,255,.14), transparent 68%);opacity:.95}
+    .eyebrow{display:flex;flex-wrap:wrap;gap:10px}.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#d8e3fb;font-size:12px;font-weight:800}.hero-title{margin:18px 0 12px;font-size:clamp(34px,5vw,64px);line-height:.98;font-weight:900;letter-spacing:-.03em;max-width:860px;background:linear-gradient(92deg,#fff 0%,#d9e9ff 20%,#8be1ff 52%,#cab8ff 82%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-copy{margin:0;max-width:760px;font-size:15px;line-height:1.9;color:#cad5eb}.meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:24px}.meta-chip{padding:14px 15px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}.meta-chip .k{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-2);font-weight:800}.meta-chip .v{margin-top:8px;font-size:14px;color:#edf4ff;font-weight:800;line-height:1.5;word-break:break-word}
+    .hero-side{padding:24px;display:grid;gap:16px;align-content:start;background:linear-gradient(180deg, rgba(16,22,47,.92), rgba(10,15,31,.9))}.hero-stat{padding:18px;border-radius:22px;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.08)}.hero-stat .label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#b9c8e7;font-weight:800}.hero-stat .value{margin-top:10px;font-size:48px;font-weight:900;line-height:1;letter-spacing:-.04em}.hero-stat .sub{margin-top:10px;font-size:14px;line-height:1.7;color:var(--muted)}.hero-stack{display:grid;gap:12px}.mini-card{padding:16px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}.mini-card .label{font-size:12px;color:#afc1e4;font-weight:800}.mini-card .value{margin-top:8px;font-size:22px;font-weight:900}.mini-card .hint{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.6}.alert{padding:14px 16px;border-radius:18px;background:rgba(255,202,106,.08);border:1px solid rgba(255,202,106,.18);color:#ffe6b7;font-size:13px;line-height:1.75}
+    .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.metric{padding:18px;border-radius:22px;background:linear-gradient(180deg, rgba(17,24,52,.88), rgba(11,16,34,.94));position:relative;overflow:hidden}.metric:after{content:"";position:absolute;inset:auto -30px -40px auto;width:120px;height:120px;background:radial-gradient(circle, rgba(98,208,255,.16), transparent 70%)}.metric .label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#adbcdb;font-weight:800}.metric .value{margin-top:10px;font-size:32px;font-weight:900;letter-spacing:-.03em}.metric .hint{margin-top:8px;font-size:13px;line-height:1.7;color:var(--muted)}.metric.bad{background:linear-gradient(180deg, rgba(63,22,34,.68), rgba(21,11,18,.95));border:1px solid rgba(255,123,138,.2)}.metric.warn{background:linear-gradient(180deg, rgba(64,46,13,.66), rgba(23,18,8,.94));border:1px solid rgba(255,202,106,.18)}
+    .section{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(300px,.82fr);gap:18px;margin-bottom:18px}.panel,.list-card,.spot-card,.action-card{padding:22px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px;flex-wrap:wrap}.section-head h2{margin:0;font-size:20px;letter-spacing:-.02em}.section-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}.chart-shell{padding:16px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.06)}.chart{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;align-items:end;height:280px}.barcol{display:flex;flex-direction:column;align-items:center;gap:10px}.bars{display:flex;align-items:end;gap:5px;height:210px}.bar{width:13px;border-radius:999px 999px 4px 4px;background:linear-gradient(180deg, rgba(98,208,255,1), rgba(98,208,255,.25));box-shadow:0 10px 24px rgba(98,208,255,.18)}.bar.b2{background:linear-gradient(180deg, rgba(255,124,184,1), rgba(255,124,184,.25));box-shadow:0 10px 24px rgba(255,124,184,.18)}.bar.b3{background:linear-gradient(180deg, rgba(255,202,106,1), rgba(255,202,106,.25));box-shadow:0 10px 24px rgba(255,202,106,.18)}.xlabel{font-size:11px;color:var(--muted);font-weight:700}
+    .legend{display:grid;gap:12px}.legend-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-top:1px solid rgba(255,255,255,.06)}.legend-row:first-child{border-top:0;padding-top:0}.left{display:flex;align-items:center;gap:10px;font-weight:800;color:#e9f0ff}.dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 4px rgba(255,255,255,.04)}.num{font-weight:900;color:#dce8ff}
+    .list-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;margin-bottom:18px}.table{display:grid;gap:12px}.row{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}.row-top{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,max-content);gap:12px;align-items:start}.row .title{font-weight:900;color:#edf4ff;line-height:1.6;word-break:break-word}.row .note{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.75}.row .metric-num{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:12px;font-weight:900;color:#cdddff}
+    .recording{display:grid;gap:12px}.rec{padding:16px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.07)}.rec h3{margin:0 0 6px;font-size:16px;line-height:1.5}.meta2{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}.tag{padding:7px 10px;border-radius:999px;background:rgba(98,208,255,.08);border:1px solid rgba(98,208,255,.18);font-size:12px;color:#d0f1ff}.cta{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:linear-gradient(90deg, rgba(98,208,255,.18), rgba(139,124,255,.18));border:1px solid rgba(255,255,255,.08);font-size:12px;font-weight:900;text-decoration:none;color:#f4f7ff}
+    .recs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.recbox{padding:18px;border-radius:22px;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08)}.pri{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:900;margin-bottom:10px;letter-spacing:.12em;text-transform:uppercase}.pri.high{background:rgba(255,123,138,.12);border:1px solid rgba(255,123,138,.28);color:#ffcfda}.pri.medium{background:rgba(255,202,106,.11);border:1px solid rgba(255,202,106,.24);color:#ffe6b7}.pri.low{background:rgba(67,224,161,.10);border:1px solid rgba(67,224,161,.22);color:#d0ffeb}.recbox h3{margin:0 0 8px;font-size:16px;line-height:1.55}.recbox .sub{font-size:13px;line-height:1.8;color:var(--muted)}.footer-note{margin-top:16px;font-size:12px;color:var(--muted-2);line-height:1.8}
+    @media (max-width: 1180px){.hero,.section,.list-grid,.recs{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.chart{gap:8px}}
+    @media (max-width: 720px){.wrap{padding:18px 14px 40px}.hero-main,.hero-side,.panel,.list-card,.spot-card,.action-card{border-radius:22px}.hero-main{padding:22px}.hero-title{font-size:34px;line-height:1.05}.hero-copy{font-size:14px;line-height:1.85}.meta-grid,.grid4{grid-template-columns:1fr}.chart{height:220px}.bars{height:160px}.bar{width:10px}.row-top{grid-template-columns:1fr}.hero-stat .value{font-size:38px}}
   </style>
 </head>
 <body>
   <div class="wrap" id="app">載入中...</div>
   <script>
-    const DASHBOARD_CONFIG = {
-      endpoint: '/api.php',
-      siteLabel: 'https://example.com/'
-    };
+    const DASHBOARD_CONFIG = { endpoint: '/api.php', siteLabel: 'https://example.com/' };
     const esc = s => String(s ?? '');
     async function loadPayload(){ const res = await fetch(DASHBOARD_CONFIG.endpoint); if(!res.ok) throw new Error('API 載入失敗: '+res.status); return await res.json(); }
-    function cards(rows, kind){ return rows.map(r => `<div class="card metric ${kind==='issue' ? esc(r.tone||'') : ''}"><div class="label">${esc(r.label)}</div><div class="value">${esc(r.value)}</div><div class="hint">${esc(r.hint || r.sub || '')}</div></div>`).join(''); }
-    function trend(labels, s1, s2, s3){ const max=Math.max(...s1,...s2,...s3,1); return labels.map((label,i)=>{ const a=Math.max(8,Math.round(s1[i]/max*170)); const b=Math.max(8,Math.round(s2[i]/max*170)); const c=Math.max(8,Math.round(s3[i]/max*170)); return `<div class="barcol"><div class="bars"><div class="bar" style="height:${a}px"></div><div class="bar b2" style="height:${b}px"></div><div class="bar b3" style="height:${c}px"></div></div><div class="xlabel">${esc(label)}</div></div>`}).join(''); }
-    function problemRows(rows){ return rows.map(r => `<div class="row"><div class="title">${esc(r.path)}</div><div class="num">${esc(r.rageClicks)}</div><div class="num">${esc(r.deadClicks)}</div><div class="num">${esc(r.quickBacks)}</div><div class="note">${esc(r.note)}</div></div>`).join(''); }
+    function cards(rows, kind){ return rows.map(r => `<div class="glass metric ${kind==='issue' ? esc(r.tone||'') : ''}"><div class="label">${esc(r.label)}</div><div class="value">${esc(r.value)}</div><div class="hint">${esc(r.hint || r.sub || '')}</div></div>`).join(''); }
+    function trend(labels, s1, s2, s3){ const max=Math.max(...s1,...s2,...s3,1); return labels.map((label,i)=>{ const a=Math.max(10,Math.round(s1[i]/max*186)); const b=Math.max(10,Math.round(s2[i]/max*186)); const c=Math.max(10,Math.round(s3[i]/max*186)); return `<div class="barcol"><div class="bars"><div class="bar" style="height:${a}px"></div><div class="bar b2" style="height:${b}px"></div><div class="bar b3" style="height:${c}px"></div></div><div class="xlabel">${esc(label)}</div></div>`}).join(''); }
+    function problemRows(rows){ return rows.map(r => `<div class="row"><div class="row-top"><div class="title">${esc(r.path)}</div><div class="metric-num">Rage ${esc(r.rageClicks)}</div><div class="metric-num">Dead ${esc(r.deadClicks)}</div><div class="metric-num">Quick ${esc(r.quickBacks)}</div></div><div class="note">${esc(r.note)}</div></div>`).join(''); }
     function segmentRows(rows, key='label'){ return rows.map(r => `<div class="legend-row"><div class="left">${r.color?`<span class="dot" style="background:${r.color}"></span>`:''}${esc(r[key])}</div><div class="num">${esc(r.value)}${Number.isInteger(r.value)&&r.value<=100?'%':''}</div></div>`).join(''); }
-    function recordingRows(rows){ return rows.map(r => `<div class="rec"><h3>${esc(r.title)}</h3><div class="meta2"><span class="tag">${esc(r.device)}</span><span class="tag">${esc(r.country)}</span><span class="tag">${esc(r.duration)}</span><span class="tag">${esc(r.signal)}</span></div><a href="${esc(r.url)}" target="_blank" rel="noopener">開啟錄影 ↗</a></div>`).join(''); }
+    function recordingRows(rows){ return rows.map(r => `<div class="rec"><h3>${esc(r.title)}</h3><div class="meta2"><span class="tag">${esc(r.device)}</span><span class="tag">${esc(r.country)}</span><span class="tag">${esc(r.duration)}</span><span class="tag">${esc(r.signal)}</span></div><a class="cta" href="${esc(r.url)}" target="_blank" rel="noopener">開啟錄影 ↗</a></div>`).join(''); }
     function recommendationRows(rows){ return rows.map(r => `<div class="recbox"><span class="pri ${esc(r.priority)}">${esc(r.priority).toUpperCase()}</span><h3>${esc(r.title)}</h3><div class="sub">${esc(r.detail)}</div></div>`).join(''); }
     function render(data){
+      const alerts=(data.alerts||[]).map(a=>`<div class="alert">${esc(a.message)}</div>`).join('');
+      const topValue = esc(data.summaryCards?.[0]?.value || '—');
+      const second = data.summaryCards?.[1] || {};
+      const third = data.summaryCards?.[2] || {};
       document.getElementById('app').innerHTML = `
+        <div class="topbar">
+          <div class="brand"><div class="brand-badge"></div><div><h1>ClarityUX Skill</h1><p>Premium responsive UX analytics shell for HTML / WordPress / dashboards</p></div></div>
+          <div class="status-chip"><span class="status-dot"></span>${esc(data.statusLabel || '資料已同步')}</div>
+        </div>
         <section class="hero">
-          <div class="card hero-main">
-            <div class="pill-row"><span class="pill">Microsoft Clarity</span><span class="pill">UX Insights</span><span class="pill">Reusable HTML Dashboard</span></div>
-            <h1>${esc(data.dashboardTitle || '網站 UX 行為洞察儀表板')}</h1>
-            <p>這份頁面是由 Clarity UX Insights skill 產出的可重用 HTML 儀表板。只要後端 API 已接上你的 key / project 設定，就能直接顯示該網站的 UX 分析建議。</p>
-            <div class="meta"><span>網站：${esc(data.site || DASHBOARD_CONFIG.siteLabel)}</span><span>Project：${esc(data.projectId)}</span><span>區間：${esc(data.rangeLabel)}</span><span>狀態：${esc(data.statusLabel)}</span></div>
+          <div class="glass hero-main">
+            <div class="eyebrow"><span class="pill">Microsoft Clarity</span><span class="pill">RWD Premium UI</span><span class="pill">Reusable HTML Dashboard</span></div>
+            <h2 class="hero-title">${esc(data.dashboardTitle || '網站 UX 行為洞察儀表板')}</h2>
+            <p class="hero-copy">這份頁面是由 ClarityUX Skill 產出的高質感 HTML 儀表板。只要後端 API 已接上你的 token / project 設定，就能在任何網站直接顯示 UX 分析與優化建議。</p>
+            <div class="meta-grid">
+              <div class="meta-chip"><div class="k">網站</div><div class="v">${esc(data.site || DASHBOARD_CONFIG.siteLabel)}</div></div>
+              <div class="meta-chip"><div class="k">Project</div><div class="v">${esc(data.projectId)}</div></div>
+              <div class="meta-chip"><div class="k">分析區間</div><div class="v">${esc(data.rangeLabel)}</div></div>
+              <div class="meta-chip"><div class="k">最後更新</div><div class="v">${esc(data.refreshMeta?.refreshedAtLabel || '未更新')}</div></div>
+            </div>
           </div>
-          <div class="card hero-side">
-            <div><span class="live"><i></i> UX ANALYSIS READY</span><div class="big">${esc(data.summaryCards?.[0]?.value || '')}</div><div class="sub">${esc(data.statusMessage)}</div></div>
-            ${(data.alerts||[]).map(a=>`<div class="alert">${esc(a.message)}</div>`).join('')}
+          <div class="glass hero-side">
+            <div class="hero-stat"><div class="label">Core Signal</div><div class="value">${topValue}</div><div class="sub">${esc(data.statusMessage || 'Clarity 行為資料已同步，可直接用於 UX 診斷與建議整理。')}</div></div>
+            <div class="hero-stack">
+              <div class="mini-card"><div class="label">${esc(second.label || 'Secondary Metric')}</div><div class="value">${esc(second.value || '—')}</div><div class="hint">${esc(second.hint || second.sub || '反映使用者互動摩擦程度。')}</div></div>
+              <div class="mini-card"><div class="label">${esc(third.label || 'Tertiary Metric')}</div><div class="value">${esc(third.value || '—')}</div><div class="hint">${esc(third.hint || third.sub || '可搭配頁面排行與錄影一併解讀。')}</div></div>
+            </div>
+            ${alerts}
           </div>
         </section>
         <section class="grid4">${cards(data.summaryCards||[], 'summary')}</section>
         <section class="grid4">${cards(data.issueCards||[], 'issue')}</section>
         <section class="section">
-          <div class="card panel"><h2>行為訊號趨勢</h2><div class="chart">${trend(data.charts.labels||[], data.charts.rageClicks||[], data.charts.deadClicks||[], data.charts.quickBacks||[])}</div><div class="sub" style="margin-top:14px">藍 = rage clicks ｜ 粉 = dead clicks ｜ 黃 = quick backs</div></div>
-          <div class="card panel"><h2>裝置分布</h2><div class="legend">${segmentRows(data.segments.devices || [])}</div></div>
+          <div class="glass panel"><div class="section-head"><div><h2>行為訊號趨勢</h2><p>把 rage / dead / quick back 轉成高可讀性的視覺趨勢。</p></div><div class="pill">Behavior Trend</div></div><div class="chart-shell"><div class="chart">${trend(data.charts.labels||[], data.charts.rageClicks||[], data.charts.deadClicks||[], data.charts.quickBacks||[])}</div></div><div class="footer-note">藍 = rage clicks ｜ 粉 = dead clicks ｜ 黃 = quick backs</div></div>
+          <div class="glass panel"><div class="section-head"><div><h2>裝置分布</h2><p>快速辨識問題集中在哪類裝置族群。</p></div><div class="pill">Devices</div></div><div class="legend">${segmentRows(data.segments.devices || [])}</div></div>
         </section>
         <section class="list-grid">
-          <div class="card list-card"><h2>問題頁面排行</h2><div class="sub">頁面 / Rage / Dead / Quick Back</div><div class="table">${problemRows(data.problemPages||[])}</div></div>
-          <div class="card list-card"><h2>錄影重點觀察</h2><div class="recording">${recordingRows(data.recordings||[])}</div></div>
-          <div class="card list-card"><h2>來源分布</h2><div class="legend">${segmentRows(data.segments.sources || [])}</div></div>
-          <div class="card list-card"><h2>Landing Pages</h2><div class="legend">${segmentRows(data.segments.landingPages || [])}</div></div>
+          <div class="glass list-card"><div class="section-head"><div><h2>問題頁面排行</h2><p>適合對應內容優化、版位重整與 CTA 重新設計。</p></div><div class="pill">Top Problem Pages</div></div><div class="table">${problemRows(data.problemPages||[])}</div></div>
+          <div class="glass list-card"><div class="section-head"><div><h2>錄影重點觀察</h2><p>把值得回看的 sessions 用更產品化方式列出。</p></div><div class="pill">Recording Spotlight</div></div><div class="recording">${recordingRows(data.recordings||[])}</div></div>
+          <div class="glass spot-card"><div class="section-head"><div><h2>來源分布</h2><p>辨識不同流量來源的 UX 摩擦差異。</p></div><div class="pill">Sources</div></div><div class="legend">${segmentRows(data.segments.sources || [])}</div></div>
+          <div class="glass spot-card"><div class="section-head"><div><h2>Landing Pages</h2><p>快速看最常被當作入口頁的內容。</p></div><div class="pill">Entry Pages</div></div><div class="legend">${segmentRows(data.segments.landingPages || [])}</div></div>
         </section>
-        <section class="card list-card"><h2>UX 優化建議</h2><div class="recs">${recommendationRows(data.recommendations||[])}</div></section>`;
+        <section class="glass action-card"><div class="section-head"><div><h2>UX 優化建議</h2><p>將 Clarity 信號轉成可執行的頁面優化方向。</p></div><div class="pill">Actionable Recommendations</div></div><div class="recs">${recommendationRows(data.recommendations||[])}</div></section>`;
     }
-    loadPayload().then(render).catch(err => document.getElementById('app').innerHTML = `<section class="card hero-main"><h1>載入失敗</h1><p>${esc(err.message)}</p></section>`);
+    loadPayload().then(render).catch(err => document.getElementById('app').innerHTML = `<section class="glass hero-main"><h2 class="hero-title" style="font-size:32px">載入失敗</h2><p class="hero-copy">${esc(err.message)}</p></section>`);
   </script>
 </body>
 </html>
